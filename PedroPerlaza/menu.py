@@ -7,8 +7,6 @@ Módulo para interactuar con el generador de funciones Rigol DG1022 y un menú d
 from generator_functions import *
 
 
-
-
 def display_menu():
     """
     Muestra el menú de opciones al usuario.
@@ -31,9 +29,9 @@ def option_1():
     """Maneja la opción 1 del menú para configurar frecuencia y amplitud."""
     while True:
         try:
-            frequency = int(input("Ingresa la frecuencia en Hz (1 a 10 Hz): "))
+            frequency = int(input("Ingresa la frecuencia en MHz (1 a 10 MHz): "))
             if frequency < 1 or frequency > 10:
-                raise ValueError("La frecuencia debe estar entre 1 y 10 Hz.")
+                raise ValueError("La frecuencia debe estar entre 1 y 10 MHz.")
             break
         except ValueError as e:
             print(e)
@@ -58,16 +56,13 @@ def option_1():
 
     set_gaussian_wave(frequency, cycles, amplitude)
 
-
 def option_2():
     """Maneja la opción 2 del menú para consultar el estado de modo ráfaga."""
     get_burst_state()
 
-
 def option_3():
     """Maneja la opción 3 del menú para configurar la señal sinusoidal."""
     configure_sine_wave_signal()
-
 
 def option_4():
     """
@@ -95,27 +90,22 @@ def option_4():
     except ValueError as e:
         print(f"Error en la configuración del modo burst: {e}")
 
-
 def option_5():
     """Maneja la opción 5 del menú para ver el estado del canal 1."""
-    get_channel_state()
-
+    get_channel_configuration()
 
 def option_6():
     """Maneja la opción 6 del menú para encender el generador de funciones."""
     generator = dg1022.dg1022()
     generator.conect(0)
-    generator.write("OUTP ON")  # Encender salida
-    print("Generador de funciones encendido.")
-
 
 def option_7():
     """Maneja la opción 7 del menú para apagar el generador de funciones."""
     generator = dg1022.dg1022()
-    generator.conect(0)
-    generator.write("OUTP OFF")  # Apagar salida
-    print("Generador de funciones apagado.")
-
+    generator.conect(0)  # Conectar al puerto 0
+    time.sleep(0.5)  # Esperar a que la conexión se realice correctamente
+    generator.write("OUTP:CH1 ON")
+    generator.write("OUTP:CH2 ON")
 
 def option_8():
     """Maneja la opción 8 del menú para seleccionar el canal de salida."""

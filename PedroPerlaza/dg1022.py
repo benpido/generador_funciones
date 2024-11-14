@@ -22,13 +22,13 @@ class dg1022:
             self.name = self.name_list[index]
             self.inst = self.handle.open_resource(self.name)
             self.connected = True
+            print(self.name_list)
         except Exception as e:
             print("Unable to connect error %s: "%str(e))
             self.connected = False
     def read(self): 
         try: 
             response = self.inst.read() 
-            print(f"Response: {response}") 
             return response 
         except Exception as e: 
             print(f"Error reading response: {str(e)}")  
@@ -44,7 +44,7 @@ class dg1022:
     def write(self,msg):
         resp = self.inst.write(msg)
         time.sleep(0.1)
-        print(resp-len(msg))
+
         # comparar largo de mensaje con numeros de bytes recibidos
     def custom_signal(self,signal, plot = False, low = 0 , high =16383, v_max = 1.0, v_min = -1.0):
         # convierte una cadena de puntos en una señal, signal debe ser un objeto iterable
@@ -72,3 +72,8 @@ class dg1022:
         self.write("FREQ "+str(int(frec/n)))
         time.sleep(0.2)        
         print("FREQ "+str(int(frec/n)))
+####ELIMINAR DESDE AQUI HASTA ABAJO ####
+controller = dg1022()
+controller.conect(0)
+controller.write('*IDN?')
+print(controller.read())
